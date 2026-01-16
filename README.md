@@ -83,6 +83,8 @@ Try the sample questions below and then visualize the Monocle generated traces i
   set OPENAI_API_KEY=
   ```
 
+  Alternatively you may enter the OKAHU_API_KEY and OPENAI_API_KEY in a .env file using the .env.example template
+
   - Replace <OPENAI-API-KEY> with the value of OpenAI API key
   - Replace <OKAHU-API-KEY> with the value of Okahu API key
   
@@ -94,11 +96,18 @@ Try the sample questions below and then visualize the Monocle generated traces i
   python weather-mcp-server.py > mcp.out 2>&1 & while ! grep -q "Application startup complete" mcp.out; do sleep 0.2; done; grep "Application startup complete" mcp.out
   ```
 
-  - Windows
+  - Windows Command Prompt(CMD)
   
   ```
   cmd /c "start "" /B cmd /c ^"python -u weather-mcp-server.py > mcp.out 2>&1^" & :wait & powershell -Command ^"Start-Sleep -Milliseconds 2000^" 
   findstr /C:^"Application startup complete^" mcp.out"
+  ```
+
+  - Windows Powershell(pwsh)
+  
+  ```
+  Start-Process -FilePath powershell -ArgumentList '-NoProfile','-Command','python weather-mcp-server.py *> ''mcp.out''' -WindowStyle Hidden 
+  Select-String -Path mcp.out -Pattern 'Application startup complete' -AllMatches | ForEach-Object { $_.Matches.Value }
   ```
 
   **Expected output**: `Application startup complete`
